@@ -25,6 +25,93 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <!-- --------------------------------------------- -->
     <!-- jQuery -->
+    <script>
+     var script = document.createElement("script");
+script.src = "https://code.jquery.com/jquery-3.7.1.min.js"; // Check https://jquery.com CDN for the latest version
+document.getElementsByTagName("head")[0].appendChild(script);
+
+const eachSec = document.querySelectorAll("[class*='sec-'].focus-content");
+
+$(function () {
+  $(".dropDownBtn button").mouseenter(function () {
+    $("#menuImg").css("display", "none");
+    $("#menuImg-hover").css("display", "block");
+  });
+  $(".dropDownBtn button").mouseleave(function () {
+    $("#menuImg").css("display", "block");
+    $("#menuImg-hover").css("display", "none");
+  });
+  $(".dropDownBtn button").click(function () {
+    $("#menuImg").hide();
+    $("#menuImg-hover").show();
+    $(".dropDownContent").toggle();
+  });
+  $(".solar-title").click(function () {
+    $(".solar-planets").toggle();
+  });
+  // $(".sec-1,.sec-2,.sec-3").click(function () {
+  //   $(".hidden-sec").show();
+
+  // });
+  $(".sun img ,.sun h2").click(function () {
+    $(".sun .planet-moreInfo").toggle();
+  });
+
+  $(".Mercury img , .Mercury h2").click(function () {
+    $(".Mercury .planet-moreInfo").toggle();
+  });
+  $(".Venus img , .Venus h2").click(function () {
+    $(".Venus .planet-moreInfo").toggle();
+  });
+  $(".Earth img , .Earth h2").click(function () {
+    $(".Earth .planet-moreInfo").toggle();
+  });
+  $(".Mars img , .Mars h2").click(function () {
+    $(".Mars .planet-moreInfo").toggle();
+  });
+  $(".Jupiter img , .Jupiter h2").click(function () {
+    $(".Jupiter .planet-moreInfo").toggle();
+  });
+  $(".Saturn img , .Saturn h2").click(function () {
+    $(".Saturn .planet-moreInfo").toggle();
+  });
+  $(".Uranus img , .Uranus h2").click(function () {
+    $(".Uranus .planet-moreInfo").toggle();
+  });
+  $(".Neptune img , .Neptune h2").click(function () {
+    $(".Neptune .planet-moreInfo").toggle();
+  });
+  //  ------------------
+  // weather app
+  $("#weather-exBtn").click(function () {
+    $(".weather-info").css("display", "none");
+    $(".search").css("display", "flex");
+  });
+  // $("#weather-input").keypress(function (e) {
+  //   let key = e.which;
+  //   if (key == 13) {
+  //     $(".search").css("display", "none");
+  //     $(".weather-info").css("display", "flex");
+
+  //   }
+  // });
+
+  // to do list
+  $(".toDo-main-div").click(function () {
+    $(".to-do-list .div-1").css("display", "none");
+    $(".to-do-list .div-2").css("display", "none");
+    $(".to-do-list .div-3").css("display", "block");
+  });
+  $("#toDo-exBtn").click(function () {
+    $(".to-do-list .div-3").css("display", "none");
+    $(".to-do-list .div-2").css("display", "block");
+    $(".to-do-list .div-1").css("display", "flex");
+  });
+});
+
+
+   </script>
+
    <style>
 * {
   margin: 0;
@@ -1473,94 +1560,70 @@ progress::-webkit-progress-bar {
         </div> -->
     </main>
     <footer></footer>
-   <script>
-     var script = document.createElement("script");
-script.src = "https://code.jquery.com/jquery-3.7.1.min.js"; // Check https://jquery.com CDN for the latest version
-document.getElementsByTagName("head")[0].appendChild(script);
+   
+<script>const apiKey = "555357faa025a0ab00efb2e50e9558fc";
+const weatherBtn = document.querySelector("#weather-btn");
+const weatherBox = document.querySelector("#weather-input");
+const url = (city) =>
+  `https://api.openweathermap.org/data/2.5/weather?&units=metric&q=${city}&appid=${apiKey}`;
 
-const eachSec = document.querySelectorAll("[class*='sec-'].focus-content");
+async function checkWeather(city) {
+  const response = await fetch(url(city));
 
-$(function () {
-  $(".dropDownBtn button").mouseenter(function () {
-    $("#menuImg").css("display", "none");
-    $("#menuImg-hover").css("display", "block");
-  });
-  $(".dropDownBtn button").mouseleave(function () {
-    $("#menuImg").css("display", "block");
-    $("#menuImg-hover").css("display", "none");
-  });
-  $(".dropDownBtn button").click(function () {
-    $("#menuImg").hide();
-    $("#menuImg-hover").show();
-    $(".dropDownContent").toggle();
-  });
-  $(".solar-title").click(function () {
-    $(".solar-planets").toggle();
-  });
-  // $(".sec-1,.sec-2,.sec-3").click(function () {
-  //   $(".hidden-sec").show();
+  if (response.status == "404") {
+    document.querySelector("#invalid-city").style.display = "block";
+    document.querySelector("#weather-exBtn").style.display = "none";
+    document.querySelector(".weather-info").style.display = "none";
+    // document.querySelector(".weather-info").style.display = "none";
+    // document.querySelector(".onFocus").style.display = "none";
+  } else {
+    var data = await response.json();
+    document.querySelector("#weather-city").innerHTML = data.name;
+    document.querySelector("#weather-mainTemp").innerHTML =
+      Math.round(data.main.temp) + "°C";
+    document.querySelector(".humidity").innerHTML =
+      Math.round(data.main.humidity) + "%";
+    document.querySelector(".feels").innerHTML = Math.round(
+      data.main.feels_like
+    );
+    document.querySelector(".sky").innerHTML = data.weather[0].description;
 
-  // });
-  $(".sun img ,.sun h2").click(function () {
-    $(".sun .planet-moreInfo").toggle();
-  });
+    const changingWeatherImg = document.querySelector("#main-icon");
 
-  $(".Mercury img , .Mercury h2").click(function () {
-    $(".Mercury .planet-moreInfo").toggle();
-  });
-  $(".Venus img , .Venus h2").click(function () {
-    $(".Venus .planet-moreInfo").toggle();
-  });
-  $(".Earth img , .Earth h2").click(function () {
-    $(".Earth .planet-moreInfo").toggle();
-  });
-  $(".Mars img , .Mars h2").click(function () {
-    $(".Mars .planet-moreInfo").toggle();
-  });
-  $(".Jupiter img , .Jupiter h2").click(function () {
-    $(".Jupiter .planet-moreInfo").toggle();
-  });
-  $(".Saturn img , .Saturn h2").click(function () {
-    $(".Saturn .planet-moreInfo").toggle();
-  });
-  $(".Uranus img , .Uranus h2").click(function () {
-    $(".Uranus .planet-moreInfo").toggle();
-  });
-  $(".Neptune img , .Neptune h2").click(function () {
-    $(".Neptune .planet-moreInfo").toggle();
-  });
-  //  ------------------
-  // weather app
-  $("#weather-exBtn").click(function () {
-    $(".weather-info").css("display", "none");
-    $(".search").css("display", "flex");
-  });
-  // $("#weather-input").keypress(function (e) {
-  //   let key = e.which;
-  //   if (key == 13) {
-  //     $(".search").css("display", "none");
-  //     $(".weather-info").css("display", "flex");
+    if (data.weather[0].main == "Clear") {
+      changingWeatherImg.src = "icons8-sun-weather.png";
+    } else if (data.weather[0].main == "Mist") {
+      changingWeatherImg.src = "icons8-mist-weather.png";
+    } else if (data.weather[0].main == "Clouds") {
+      changingWeatherImg.src = "icons8-cloud-weather.png";
+    } else if (data.weather[0].main == "Rain") {
+      changingWeatherImg.src = "icons8-rain-cloud-weather.png";
+    } else if (data.weather[0].main == "Snow") {
+      changingWeatherImg.src = "icons8-snow-weather.png";
+    } else if (data.weather[0].main == "Wind") {
+      changingWeatherImg.src = "icons8-wind-weather.png";
+    } else {
+      changingWeatherImg.src = "icons8-rain-cloud-weather.png";
+    }
 
-  //   }
-  // });
+    document.querySelector("#invalid-city").style.display = "none";
+    document.querySelector(".search").style.display = "none";
 
-  // to do list
-  $(".toDo-main-div").click(function () {
-    $(".to-do-list .div-1").css("display", "none");
-    $(".to-do-list .div-2").css("display", "none");
-    $(".to-do-list .div-3").css("display", "block");
-  });
-  $("#toDo-exBtn").click(function () {
-    $(".to-do-list .div-3").css("display", "none");
-    $(".to-do-list .div-2").css("display", "block");
-    $(".to-do-list .div-1").css("display", "flex");
-  });
+    document.querySelector(".weather-info").style.display = "flex";
+    document.querySelector("#weather-exBtn").style.display = "block";
+
+    // document.querySelector("#weather-exBtn").style.display = "flex";
+  }
+  weatherBox.value = "";
+}
+weatherBtn.addEventListener("click", () => {
+  checkWeather(weatherBox.value);
 });
-
-
-   </script>
-
-
+weatherBox.addEventListener("keydown", function (e) {
+  if (e.keyCode === 13) {
+    checkWeather(weatherBox.value);
+  }
+});</script>
 
   </body>
 </html>
